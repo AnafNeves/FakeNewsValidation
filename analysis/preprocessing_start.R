@@ -17,14 +17,12 @@ for (file in files) {
   progbar$tick()
   rawdata <- read.csv(paste0(path, "/", file))
 
-}
-
   # Initialize participant-level data
   dat <- rawdata[rawdata$screen == "browser_info", ]
   
 
   data_ppt <- data.frame(
-    Participant = dat$participantID,
+    # Participant = dat$participantID,
     Recruitment = dat$researcher,
     Condition = dat$condition,
     Experiment_StartDate = as.POSIXct(paste(dat$date, dat$time), format = "%d/%m/%Y %H:%M:%S"),
@@ -39,5 +37,8 @@ for (file in files) {
     if("prolific_id" %in% colnames(dat)){
     data_ppt$Prolific_ID <- dat$prolific_id
     }
+  
+  # Demographics
+  demog <- jsonlite::fromJSON(rawdata[rawdata$screen == "demographic_questions", ]$response)
   
 }
